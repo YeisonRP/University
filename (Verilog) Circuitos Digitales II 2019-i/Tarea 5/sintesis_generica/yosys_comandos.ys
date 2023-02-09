@@ -1,0 +1,10 @@
+# read design
+read_verilog demux_conductual.v
+
+# generic synthesis
+synth -top demux_conductual
+
+clean
+
+# write synthesized design
+write_verilog demux_estructural_sintetizado.v

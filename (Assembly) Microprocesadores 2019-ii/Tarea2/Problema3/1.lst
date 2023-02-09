@@ -1,0 +1,62 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ;*******************************************************************************
+                        ;                               TAREA 2: EJERCICIO 3
+                        ;                          PROGRAMA ORDENAR MENOR A MAYOR
+                        ;*******************************************************************************
+                        ;
+                        ;       UNIVERSIDAD DE COSTA RICA
+                        ;       FECHA 19/09/19
+                        ;       AUTOR: YEISON RODRIGUEZ PACHECO B56074
+                        ;       COREREO: yeisonrodriguezpacheco@gmail.com
+                        ;
+                        ; Descripcion: Este programa se encarga de guardar numeros con signo de 1 byte
+                        ; que sean divisibles por 4 en la direccion DIV4. Los datos se leen de la
+                        ; direccion DATOS y su longitud se encuentra en la variable L de 1 byte. Se debe
+                        ; almacenar en la variable CANT4 la cantidad de numeros divisibles por 4 encon-
+                        ; trados. Los punteros indices X y Y solo se pueden modificar al inicio del
+                        ; programa
+                        ;
+                        ;
+1000                            ORG $1000
+1000                    L:               ds 1
+1001                    CANT4:           ds 1
+1002                    AUX:             ds 1
+1003                    AUX2:            ds 1
+                        
+1100                            ORG $1100
+1100                    DATOS:              ds 255
+                        
+1200                            ORG $1200
+1200                    DIV4:               ds 255
+                        
+1300                            ORG $1300
+1300 ce 11 00                   LDX #DATOS      ;Inicializando punteros que no se van a cambiar NUNCA
+1303 cd 12 00                   LDY #DIV4
+1306 c7                         CLRB            ; B = 0
+1307 79 10 01                   CLR CANT4       ; Borrando lo que tenga CATN4
+130a                    Main_Loop:
+130a a6 e5                      LDAA B,X        ; Cargando el numero del array a analizar
+130c 7a 10 02                   STAA AUX        ; Guarda el numero en una variable auxiliar, liego se decidira si se guarda o no
+130f 2a 01                      BPL Revi_mult   ; Si el numero es positivo, continua
+1311 40                         NEGA            ; Calculando omplemento base 2 del numero negativo
+1312                    Revi_mult:
+1312 7a 10 03                   STAA AUX2       ; Guardando el numero en una variable auxiliar para hacer BRCLR
+1315 1f 10 03 03 02             BRCLR AUX2,%00000011,Guardar_numero
+131a 20 0b                      BRA Aumentar_contador
+131c                    Guardar_numero:
+131c b6 10 01                   LDAA CANT4      ; Para hacer direccionamiento indexado con acumulador
+131f 72 10 01                   INC CANT4       ; Cantidad de numeros encontrados + 1
+1322 18 09 ec 10 02             MOVB AUX, A,Y   ; Guardando el numero en el arreglo DIV4
+1327                    Aumentar_contador:
+1327 52                         INCB
+1328 f1 10 00                   CMPB L
+132b 26 dd                      BNE Main_Loop
+132d                    FIN:
+132d 20 fe                      BRA FIN
+                        
+
+Executed: Mon Sep 23 22:54:14 2019
+Total cycles: 50, Total bytes: 47
+Total errors: 0, Total warnings: 0

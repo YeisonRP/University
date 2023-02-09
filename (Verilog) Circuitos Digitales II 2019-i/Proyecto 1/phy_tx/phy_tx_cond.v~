@@ -1,0 +1,48 @@
+`include "mux.v" 	   
+`include "Byte_striping_cond.v" 	
+`include "Paralelo_Serie_conductual.v" 		
+
+module phy_tx_cond(
+    input [7:0] data_in_0_c,
+    input [7:0] data_in_1_c,
+    input valid_in_c,
+    input clk_f,
+    input clk_2f,
+    input clk_8f,
+    input reset,
+    output Paral_serial_out_0_c,
+    output Paral_serial_out_1_c
+);
+
+reg [7:0] data_in_0_FF, data_in_1_FF;
+reg valid_in_FF;
+
+// FLOPS INICIALES
+always @(posedge clk_2f) begin
+    if(reset == 0) begin
+        data_in_0_FF <= 0;
+        data_in_1_FF <= 0;
+        valid_in_FF <= 0;
+    end
+    else    begin
+        data_in_0_FF <= data_in_0_c;
+        data_in_1_FF <= data_in_1_c;
+        valid_in_FF <= valid_in_c;        
+    end
+end
+
+/*AUTOWIRE*/
+
+mux  mux_instance0( /*AUTOINST*/  	   
+		 );
+
+Byte_striping_cond  Byte_striping_instance0( /*AUTOINST*/  	   
+		 );
+
+Paralelo_Serie_conductual  Paralelo_Serie_conductual_instance0( /*AUTOINST*/  	   
+		 ); 	   
+
+Paralelo_Serie_conductual  Paralelo_Serie_conductual_instance1( /*AUTOINST*/  	   
+		 ); 
+ endmodule 
+

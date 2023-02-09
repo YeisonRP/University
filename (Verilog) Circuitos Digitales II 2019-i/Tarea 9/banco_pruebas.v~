@@ -1,0 +1,20 @@
+`timescale 	1ns				/ 100ps
+
+`include "sumador_c.v" 	   
+`include "sumador_e.v" 	   
+`include "probador.v"
+ 	   
+module banco_pruebas; 
+ 	   
+/*AUTOWIRE*/
+ 	   
+sumador_c  sumador_c_instance( /*AUTOINST*/  	   
+		 );
+ 	   
+sumador_e  sumador_e_instance( /*AUTOINST*/  	   
+		);
+ 	   
+probador  probador_inst( /*AUTOINST*/  	   
+		 );
+ 	   
+endmodule

@@ -1,0 +1,8 @@
+/home/yeison/Escritorio/Repositorio_Proyecto_ESTRUCTURAS/build/CMakeFiles/rebuild_cache.dir
+/home/yeison/Escritorio/Repositorio_Proyecto_ESTRUCTURAS/build/CMakeFiles/edit_cache.dir
+/home/yeison/Escritorio/Repositorio_Proyecto_ESTRUCTURAS/build/src/CMakeFiles/rebuild_cache.dir
+/home/yeison/Escritorio/Repositorio_Proyecto_ESTRUCTURAS/build/src/CMakeFiles/l1cache.dir
+/home/yeison/Escritorio/Repositorio_Proyecto_ESTRUCTURAS/build/src/CMakeFiles/edit_cache.dir
+/home/yeison/Escritorio/Repositorio_Proyecto_ESTRUCTURAS/build/test/CMakeFiles/rebuild_cache.dir
+/home/yeison/Escritorio/Repositorio_Proyecto_ESTRUCTURAS/build/test/CMakeFiles/cachetest.dir
+/home/yeison/Escritorio/Repositorio_Proyecto_ESTRUCTURAS/build/test/CMakeFiles/edit_cache.dir

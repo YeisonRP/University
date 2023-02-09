@@ -1,0 +1,9 @@
+p = 97
+q = 29
+n = 2813
+phi = 2688
+e = 5
+d = 1613
+texto original: abcde
+texto encriptado: Ë[Aa
+texto desencriptado: ô®q<—

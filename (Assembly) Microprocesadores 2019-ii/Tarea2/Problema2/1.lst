@@ -1,0 +1,85 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ;*******************************************************************************
+                        ;                               TAREA 2: EJERCICIO 2
+                        ;                          PROGRAMA XOR ENTRE DOS TABLAS
+                        ;*******************************************************************************
+                        ;
+                        ;       UNIVERSIDAD DE COSTA RICA
+                        ;       FECHA 18/09/19
+                        ;       AUTOR: YEISON RODRIGUEZ PACHECO B56074
+                        ;       COREREO: yeisonrodriguezpacheco@gmail.com
+                        ;
+                        ; Descripcion: Este es un programa que se encarga
+                        ;
+                        ; 12 XOR 23 = 31
+                        ; 00 XOR 47 = 47
+                        ; 12 XOR 9a = 88
+                        ; f3 XOR 4d = be
+                        ; 12 XOR ef = fd
+                        ; 34 XOR 23 = 17
+                        ; f2 xor 12 = e0
+                        ; e3 xor 45 = a6
+                        
+1050                            ORG $1050
+1050 45 12 34 12 f3 12  DATOS:     db $45,$12,$34,$12,$f3,$12,$00,$23,$ff
+     00 23 ff
+                        
+1150                            ORG $1150
+1150 12 47 9a 4d ef 23  MASCARAS:  db $12,$47,$9a,$4d,$ef,$23,$f2,$e3,$f2,$f8,$fc,$fe
+     f2 e3 f2 f8 fc fe
+                        
+1300                            ORG $1300
+1300                    NEGAT:     ds 100
+                        
+1500                            ORG $1500
+1500                    DIR_GUARDADO    ds 2
+1502                    CONTADOR_DATOS  ds 2
+                                
+2000                            ORG $2000
+2000 cd 10 50                   LDY #DATOS
+2003 cc 00 00                   LDD #0
+2006 79 15 02                   CLR CONTADOR_DATOS
+2009                    Contando:
+2009 a6 70                      LDAA 1,Y+
+200b 81 ff                      CMPA #$FF
+200d 27 09                      BEQ Continuar
+200f cb 01                      ADDB #1
+2011 24 f6                      BCC Contando     ;Sigue contando si no se levanta el carry
+2013 72 15 02                   INC CONTADOR_DATOS ; incrementa parte alta del contador porque hubo carry
+2016 20 f1                      BRA Contando
+2018                    Continuar:
+2018 cd 15 02                   LDY #CONTADOR_DATOS ; Guardando parte baja del tamano de la tabla DATOS en memoria
+201b 6b 41                      STAB 1,Y
+201d ce 11 50                   LDX #MASCARAS ; X siempre tendra el puntero a datos de mascaras
+2020 cd 13 00                   LDY #NEGAT    ; Copiando en DIR_GUARDADO de guardado el valor de NEGAT
+2023 7d 15 00                   STY DIR_GUARDADO
+2026                    Main_loop:
+2026 cd 10 50                   LDY #DATOS           ;Cargando valores a utilizar
+2029 fc 15 02                   LDD CONTADOR_DATOS
+202c 27 23                      BEQ FIN             ; Ya se opero en toda la tabla de DATOS
+202e 03                         DEY                ; Cargando en A el valor del dato de DATOS
+202f a6 ee                      LDAA D,Y
+2031 c6 fe                      LDAB #$FE          ; Verificacion si se llego al final de la tabla de mascaras
+2033 e1 00                      CMPB 0,X
+2035 27 1a                      BEQ FIN            ; Si se llego al final de la tabla de mascaras se acaba el programa
+2037 a8 00                      EORA 0,X             ; Calculo de la XOR, se guarda en A
+2039 08                         INX                ; Se incrementa el puntero de mascaras para en el siguiente ciclo leer la sig
+203a 2b 02                      BMI Guardar        ; Si el resultado de la XOR es negativo, se procede a guardarlo
+203c 20 08                      BRA Dec_contador      ; Se repite el ciclo
+203e                    Guardar:
+203e fd 15 00                   LDY DIR_GUARDADO   ; Guardando el dato y haciendo DIR_GUARDADO += 1
+2041 6a 70                      STAA 1,Y+
+2043 7d 15 00                   STY DIR_GUARDADO
+2046                    Dec_contador:
+2046 fc 15 02                   LDD CONTADOR_DATOS         ; Decrementando el contador de datos
+2049 83 00 01                   SUBD #1                    ; Preguntar a GD
+204c 7c 15 02                   STD CONTADOR_DATOS
+204f 20 d5                      BRA Main_loop             ; Se repite el ciclo
+2051                    FIN:
+2051 20 fe                      BRA FIN
+
+Executed: Thu Sep 19 11:40:43 2019
+Total cycles: 89, Total bytes: 104
+Total errors: 0, Total warnings: 0

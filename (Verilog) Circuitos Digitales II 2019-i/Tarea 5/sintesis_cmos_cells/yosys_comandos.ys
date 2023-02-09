@@ -1,0 +1,23 @@
+# read design
+read_verilog demux_conductual.v
+
+# elaborate design hierarchy
+hierarchy -check -top demux_conductual
+
+# the high-level stuff
+proc; opt; fsm; opt; memory; opt
+
+# mapping to internal cell library
+techmap; opt
+
+# mapping flip-flops to cmos.lib
+dfflibmap -liberty cmos.lib
+
+# mapping logic to cmos.lib
+abc -liberty cmos.lib
+
+# cleanup
+clean
+
+# write synthesized design
+write_verilog demux_estructural_sintetizado.v

@@ -1,0 +1,21 @@
+#lee diseño
+read_verilog proy1_conductual.v
+hierarchy -check -top proy1_conductual
+
+#cosas de alto nivel
+proc; opt; fsm; opt; memory; opt
+
+#Mapeado a libreria interna de celdas
+techmap; opt
+
+#mapeado de flip flips
+dfflibmap -liberty cmos_cells.lib
+
+#mapeado de lógica
+abc -liberty cmos_cells.lib
+
+#cleanup
+#clean
+
+#escribe diseño sintetizado
+write_verilog proy1_synth.v

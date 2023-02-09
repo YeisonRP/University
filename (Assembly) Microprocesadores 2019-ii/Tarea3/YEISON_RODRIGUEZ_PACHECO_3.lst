@@ -1,0 +1,302 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ;*******************************************************************************
+                        ;                                 TAREA 3
+                        ;                          SUBRUTINAS DEL DEBUG 12
+                        ;*******************************************************************************
+                        ;
+                        ;       UNIVERSIDAD DE COSTA RICA
+                        ;       FECHA 2/10/19
+                        ;       AUTOR: YEISON RODRIGUEZ PACHECO B56074
+                        ;       COREREO: yeisonrodriguezpacheco@gmail.com
+                        ;
+                        ;
+                        ; Descripcion: Este programa se encarga de analizar un conjunto de datos de 1
+                        ; byte almacenados en DATOS con longitud LONG (1 byte), el programa pide al usua-
+                        ; rio la cantidad de numeros maxima a encontrar y lo almacena en una variable
+                        ; tipo byte llamada CANT. Seguidamente mostrara en pantalla las raices cuadradas
+                        ; de los numeros encontrados en DATOS.
+                        
+                        
+                        
+                        ;*******************************************************************************
+                        ;                        DECLARACION ESTRUCTURAS DE DATOS
+                        ;*******************************************************************************
+1000                            ORG $1000
+1000 0a                 LONG:   db 10
+1001                    CANT:   ds 1
+1002                    CONT:   ds 1
+                        
+1020                            ORG $1020
+1020 04 09 12 04 1b 3f  DATOS:  db 4,9,18,4,27,63,12,32,36,15 ;,36,121,144,169,196,225,230
+     0c 20 24 0f
+                        
+1040                            ORG $1040
+1040 04 09 10 19 24 31  CUAD:   db 4,9,16,25,36,49,64,81,100,121,144,169,196,225
+     40 51 64 79 90 a9
+     c4 e1
+                        
+1100                            ORG $1100
+1100                    ENTERO: ds 30
+                        
+                        ;**********************************
+                        ; DECLARACIONES in/out DEBUG 12
+                        ;**********************************
+ee84                    GETCHAR: EQU $EE84
+ee86                    PUTCHAR: EQU $EE86
+ee88                    printf:  EQU $EE88
+0000                    FIN:     EQU $0
+000d                    CR:      EQU $0D
+000a                    LF:      EQU $0A
+                        
+                        ;**********************************
+                        ; DECLARACIONES EXTRAS
+                        ;**********************************
+1300                            ORG $1300
+1300                    H__:    ds 1
+1301                    X__:    ds 1
+                        
+1302 49 4e 47 52 45 53  Msj_0:    fcc "INGRESE EL VALOR DE CANT (ENTRE 1 Y 99):"
+     45 20 45 4c 20 56
+     41 4c 4f 52 20 44
+     45 20 43 41 4e 54
+     20 28 45 4e 54 52
+     45 20 31 20 59 20
+     39 39 29 3a
+132a 00                           db FIN
+132b                    Msj_null: fcc ""
+132b 0d 0a 0d 0a 00               db CR,LF,CR,LF,FIN
+1330 4c 41 20 43 41 4e  Msj_1:    fcc "LA CANTIDAD DE NUMEROS ENCONTRADOS : %i"
+     54 49 44 41 44 20
+     44 45 20 4e 55 4d
+     45 52 4f 53 20 45
+     4e 43 4f 4e 54 52
+     41 44 4f 53 20 3a
+     20 25 69
+1357 0d 0a 0d 0a 00               db CR,LF,CR,LF,FIN
+135c 45 4e 54 45 52 4f  Msj_2:    fcc "ENTERO: "
+     3a 20
+1364 00                           db FIN
+1365 25 69 2c 20        Msj_3:    fcc "%i, "
+1369 00                           db FIN
+136a 25 69              Msj_4:    fcc "%i"
+136c 0d 0a 0d 0a 00               db CR,LF,CR,LF,FIN
+                                  
+                                  
+                                  
+                        ;*******************************************************************************
+                        ;                              PROGRAMA PRINCIPAL
+                        ;*******************************************************************************
+                        
+2000                            ORG $2000
+2000 cf 30 00                   LDS #$3000
+2003                    main:
+2003 16 20 0e                   JSR LEER_CANT
+2006 16 20 70                   JSR BUSCAR
+2009 16 20 d4                   JSR Print_RESULT
+200c 20 f5                      BRA main
+                                
+                        
+                        ;*******************************************************************************
+                        ;                                SUBRUTINA LEER_CANT
+                        ;*******************************************************************************
+                        ;Descripcion: Esta subrutina se encarga de solicitar al usuario por medio del
+                        ;teclado la cantidad de numeros (CANT) del arreglo DATOS con raiz cuadrada a
+                        ;imprimir. Solo se aceptan numeros del 01 al 99 (00 no).
+                        
+200e                    LEER_CANT:
+200e ce 00 00                   LDX #0
+2011 cc 13 02                   LDD #Msj_0
+2014 15 e3 ee 88                JSR [printf,x]  ; Imprimiendo "INGRESE EL VALOR DE CANT (ENTRE 1 Y 99):"
+2018 ce 00 00                   LDX #0
+201b 86 02                      LDAA #2
+201d                    Leyendo_dato:
+201d 36                         PSHA                     ;Guardando contexto actual
+201e 15 e3 ee 84                JSR [GETCHAR,x]          ; Tomando el dato de entrada en ASCII
+2022 32                         PULA                     ; Cargando contexto anterior
+2023 c1 30                      CMPB #$30
+2025 2b f6                      BMI Leyendo_dato         ; Verificando si es menor que 0
+2027 c1 3a                      CMPB #$3a
+2029 2a f2                      BPL Leyendo_dato         ; Verificando si es mayor que 9
+202b 04 00 0c                   DBEQ A,Procesar          ; Si es el segundo numero a procesar, salta
+202e ce 00 00                   LDX #0
+2031 15 e3 ee 86                JSR [PUTCHAR,x]          ; Imprimiendo caracter
+2035 7b 10 01                   STAB CANT
+2038 20 e3                      BRA Leyendo_dato         ; repite el ciclo
+203a                    Procesar:
+203a b6 10 01                   LDAA CANT                      ; Verificando si ambos son 0, si es asi
+203d 81 30                      CMPA #$30                      ; vuelve a pedir el segundo numero
+203f 26 08                      BNE Continuar
+2041 c1 30                      CMPB #$30                      ; vuelve a pedir el segundo numero
+2043 26 04                      BNE Continuar
+2045 86 01                      LDAA #1
+2047 20 d4                      BRA Leyendo_dato
+2049                    Continuar:
+2049 ce 00 00                   LDX #0
+204c 15 e3 ee 86                JSR [PUTCHAR,x]                 ; Imprimiendo segundo numero
+2050 c0 30                      SUBB #$30                       ; calculando el numero en binario
+2052 37                         PSHB                            ; guardando el numero
+2053 c6 0a                      LDAB #10
+2055 b6 10 01                   LDAA CANT
+2058 80 30                      SUBA #$30                       ; calculando valor binario del num mas
+205a 12                         MUL                             ; significativo, multiplicandolo por 10
+205b 7b 10 01                   STAB CANT
+205e 33                         PULB
+205f fb 10 01                   ADDB CANT                       ; Sumando parte alta y baja del numero
+2062 7b 10 01                   STAB CANT                       ; Y guaradando el resultado
+2065 ce 00 00                   LDX #0         ; Imprimiendo "INGRESE EL VALOR DE CANT (ENTRE 1 Y 99):";Imprimiendo espacios de linea
+2068 cc 13 2b                   LDD #Msj_null
+206b 15 e3 ee 88                JSR [printf,x]                  ; Imprimiendo saltos de linea
+206f 3d                         RTS
+                                
+                                
+                                
+                        
+                        ;*******************************************************************************
+                        ;                                SUBRUTINA BUSCAR
+                        ;*******************************************************************************
+                        ;Descripcion: Esta subrutina se encarga de buscar los datos en el arreglo DATOS
+                        ; que tengan raiz cuadrada entera, ademas se debe calcular la raiz de estos nu-
+                        ; meros y guardarse en el arreglo ENTEROS. Tambien se debe llevar la cuenta de
+                        ; la cantidad de datos con raiz cuadrada entera se han encontrado, si se supera
+                        ; el limite de datos encontrados (dado por CANT) se deja de revisar el arreglo
+                        ; datos
+                        
+2070                    BUSCAR:
+2070 ce 10 20                   LDX #DATOS      ; Inicializando datos
+2073 f6 10 00                   LDAB LONG
+2076 79 10 02                   CLR CONT
+2079                    BUSCAR_Main_loop:
+2079 b6 10 02                   LDAA CONT       ; Terminando el programa si ya se encontraron CANT datos
+207c b1 10 01                   CMPA CANT
+207f 27 2a                      BEQ BUSCAR_FIN
+2081 cd 10 40                   LDY #CUAD
+2084 a6 30                      LDAA 1,X+       ; Cargando en A el valor a buscar si tiene raiz cuadrada
+2086 37                         PSHB            ; Guardando contador en pila
+2087 c6 e1                      LDAB #225       ; Para saber si ya se termino la tabla CUAD
+2089                    BUSCAR_buscan_cuad:     ; Buscando si el numero esta en CUAD
+2089 a1 40                      CMPA 0,Y
+208b 27 06                      BEQ BUSCAR_RAIZ ; Si esta en CUAD
+208d e1 70                      CMPB 1,Y+
+208f 27 14                      BEQ BUSCAR_Dec_cont
+2091 20 f6                      BRA BUSCAR_buscan_cuad
+2093                    BUSCAR_RAIZ:            ; Calculando la raiz cuadrada del numero y guardando en entero
+2093 34                         PSHX            ; Dato actual, guardando
+2094 36                         PSHA            ; Numero a calcular raiz
+2095 16 20 ac                   JSR RAIZ        ; Calcula raiz cuadrada
+2098 32                         PULA            ; Raiz del numero
+2099 30                         PULX            ; Recuperando dato actual
+209a f6 10 02                   LDAB CONT
+209d cd 11 00                   LDY #ENTERO
+20a0 6a ed                      STAA B,Y        ; Guardando resultado de la raiz cuadrada en ENTERO
+20a2 72 10 02                   INC CONT        ; Incre contador de numeros con raiz cuadrada encontrados
+20a5                    BUSCAR_Dec_cont:
+20a5 33                         PULB            ; Sacando el contador de la pila
+20a6 04 01 02                   DBEQ B,BUSCAR_FIN ; Si ya se analizo todo DATOS, termina.
+20a9 20 ce                      BRA BUSCAR_Main_loop
+20ab                    BUSCAR_FIN:
+20ab 3d                         RTS
+                                
+                                
+                                
+                                
+                                
+                        ;*******************************************************************************
+                        ;                                SUBRUTINA RAIZ
+                        ;*******************************************************************************
+                        
+                        ; Esta subrutina recibe un numero de 1 byte como parametro de entrada, a este
+                        ; numero se le calcula la raiz cuadrada y el resultado tambien es devuelto por
+                        ; la pila en un dato de 1 byte, que seria la raiz cuadrada del dato.
+                        ; Esta funcion modifica todos los registros.
+                        
+                        ; Calcula la raiz cuadrada de un numero
+                        
+                        ; Parametros que usa
+                        ; H__ Variable tipo byte. Uso igual al del enunciado de la tarea (raiz)
+                        ; X__ Variable tipo byte. Uso igual al del enunciado de la tarea (raiz)
+                        
+20ac                    RAIZ:
+20ac 31                         PULY             ;Guardando direccion retorno
+20ad 18 0b 01 13 00             MOVB #1,H__
+20b2 32                         PULA
+20b3 7a 13 01                   STAA X__         ; Guardando numero a calcular raiz en X__
+20b6 36                         PSHA
+20b7                    RAIZ_main_loop:
+20b7 33                         PULB
+20b8 f1 13 00                   CMPB H__
+20bb 27 14                      BEQ RAIZ_Fin      ; Condicion de parada, si b = h (ver enunciado)
+20bd fb 13 00                   ADDB H__
+20c0 54                         LSRB              ; Dividiendo por 2
+20c1 37                         PSHB              ; Resultado se guarda en pila
+20c2 b7 15                      TFR B,X            ; Cargando datos de division
+20c4 87                         CLRA               ; Cargando en D X__
+20c5 f6 13 01                   LDAB X__
+20c8 18 10                      IDIV               ; Dividiendo x/b
+20ca b7 c5                      XGDX
+20cc 7b 13 00                   STAB H__          ; Guardando resultado en H__
+20cf 20 e6                      BRA RAIZ_main_loop
+20d1                    RAIZ_Fin:
+20d1 37                         PSHB            ; Valor a retornar
+20d2 35                         PSHY            ; Direccion retorno
+20d3 3d                         RTS
+                        
+                        
+                        
+                                
+                        ;*******************************************************************************
+                        ;                                SUBRUTINA Print_RESULT
+                        ;*******************************************************************************
+                        ;Descripcion: Esta subrutina se encarga de imprimir la cantidad de numeros con
+                        ; raiz cuadrada encontrados, ademas de que imprime el resultado de estas raices.
+                        ; Se utiliza la subrutina printf del DEBUG12.
+                        
+20d4                    Print_RESULT:
+20d4 ce 00 00                   LDX #0
+20d7 87                         CLRA            ; Guardando la cantidad de datos encontrados en pila para
+20d8 f6 10 02                   LDAB CONT       ; desplegar en pantalla
+20db 3b                         PSHD
+20dc cc 13 30                   LDD #Msj_1
+20df 15 e3 ee 88                JSR [printf,x]  ; Imprimiendo mensaje "LA CANTIDAD DE NUMEROS ENCONTRADOS : %i"
+20e3 1b 82                      LEAS 2,SP
+20e5 ce 00 00                   LDX #0
+20e8 cc 13 5c                   LDD #Msj_2
+20eb 15 e3 ee 88                JSR [printf,x]   ; Imprimiendo mensaje "ENTERO: "
+20ef cd 11 00                   LDY #ENTERO
+20f2 f6 10 02                   LDAB CONT
+20f5                    Print_imprimiendo:       ; Imprimiendo numeros resultados
+20f5 04 01 16                   DBEQ B,Print_impr_final ; Si es el ultimo numero, salta
+20f8 ce 00 00                   LDX #0
+20fb 87                         CLRA                    ; parte alta en 0 para cargar numero de 1 byte
+20fc 37                         PSHB                    ; en el acumulador D
+20fd e6 70                      LDAB 1,Y+               ; numero en parte baja de D
+20ff 35                         PSHY                    ; GUARDANDO direccion de imprimir sig num en pila
+2100 3b                         PSHD
+2101 cc 13 65                   LDD #Msj_3
+2104 15 e3 ee 88                JSR [printf,x]   ; Imprimiendo Mensaje "%i,"
+2108 1b 82                      LEAS 2,SP
+210a 31                         PULY             ; Retornar direccion de imprimir sig numero de pila
+210b 33                         PULB             ; Retornando contador
+210c 20 e7                      BRA Print_imprimiendo
+210e                    Print_impr_final:             ; Imprimiendo ultimo numero que no lleva ,
+210e ce 00 00                   LDX #0
+2111 87                         CLRA
+2112 e6 40                      LDAB 0,Y
+2114 3b                         PSHD
+2115 cc 13 6a                   LDD #Msj_4
+2118 15 e3 ee 88                JSR [printf,x]   ;Imprimiendo Mensaje "%i"
+211c 1b 82                      LEAS 2,SP
+211e 3d                         RTS             ; Retornando
+                                
+                                
+                                
+                                
+                                
+                        
+                                
+                                
+
+Executed: Sat Oct 12 13:35:43 2019
+Total cycles: 360, Total bytes: 423
+Total errors: 0, Total warnings: 0

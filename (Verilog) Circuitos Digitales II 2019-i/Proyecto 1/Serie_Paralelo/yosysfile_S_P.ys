@@ -1,0 +1,23 @@
+# read design 
+read_verilog Serie_Paralelo.v
+
+# elaborate design hierarchy
+hierarchy -check -top Serie_Paralelo
+
+# the high-level stuff
+proc; opt; fsm; opt; memory; opt
+
+# mapping to internal cell library
+techmap; opt
+
+# mapping flip-flops to CMOS_cells.lib
+dfflibmap -liberty CMOS_cells.lib
+
+# mapping logic to CMOS_cells.lib
+abc -liberty CMOS_cells.lib
+
+# cleanup
+clean
+
+# write synthesized design
+write_verilog S_P_Yosys.v

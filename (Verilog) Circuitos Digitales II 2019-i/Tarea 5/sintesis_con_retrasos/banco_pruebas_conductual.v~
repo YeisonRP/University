@@ -1,0 +1,20 @@
+`timescale 	1ns				/ 100ps
+
+`include "demux_conductual.v"
+`include "demux_estructural.v"
+`include "probador.v"
+
+module banco_pruebas_conductual; 
+
+ /*AUTOWIRE*/
+
+demux_conductual  demux_conductual_instance( /*AUTOINST*/ 
+ 		 );
+
+ demux_estructural  demux_estructural_instance( /*AUTOINST*/ 
+		);
+
+probador  probador_inst( /*AUTOINST*/ 
+		 );
+
+ endmodule

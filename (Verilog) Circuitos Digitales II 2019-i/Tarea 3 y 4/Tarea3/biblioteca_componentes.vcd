@@ -1,0 +1,479 @@
+$date
+	Sun Mar 31 13:07:05 2019
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	100ps
+$end
+$scope module banco_pruebas_conductual $end
+$var wire 1 ! entrada2 $end
+$var wire 1 " entrada1 $end
+$var wire 4 # deMux_4_bits_1 [3:0] $end
+$var wire 4 $ deMux_4_bits_0 [3:0] $end
+$var wire 1 % deMux_1 $end
+$var wire 1 & deMux_0 $end
+$var wire 1 ' clk $end
+$var wire 4 ( bus [3:0] $end
+$var wire 1 ) Not $end
+$var wire 1 * Nor $end
+$var wire 1 + Nand $end
+$scope module biblioteca_prueba_comp $end
+$var wire 1 ! entrada2 $end
+$var wire 1 " entrada1 $end
+$var wire 4 , deMux_4_bits_1 [3:0] $end
+$var wire 4 - deMux_4_bits_0 [3:0] $end
+$var wire 1 % deMux_1 $end
+$var wire 1 & deMux_0 $end
+$var wire 1 ' clk $end
+$var wire 4 . bus [3:0] $end
+$var wire 1 ) Not $end
+$var wire 1 * Nor $end
+$var wire 1 + Nand $end
+$var wire 1 / Fnot $end
+$scope module CompuertaNand $end
+$var wire 1 + out $end
+$var wire 1 ! i2 $end
+$var wire 1 " i1 $end
+$upscope $end
+$scope module CompuertaNor $end
+$var wire 1 * out $end
+$var wire 1 ! i2 $end
+$var wire 1 " i1 $end
+$upscope $end
+$scope module CompuertaNot $end
+$var wire 1 ) out $end
+$var wire 1 " in $end
+$upscope $end
+$scope module flipFlop4 $end
+$var wire 1 ) in $end
+$var wire 1 ' clk $end
+$var reg 1 / q $end
+$var real 1 0 time_a $end
+$var real 1 1 time_b $end
+$var real 1 2 time_c $end
+$var real 1 3 time_width $end
+$upscope $end
+$scope module mux1bit $end
+$var wire 1 4 y1 $end
+$var wire 1 5 y0 $end
+$var wire 1 6 select_ $end
+$var wire 1 ! select $end
+$var wire 1 % o1 $end
+$var wire 1 & o0 $end
+$var wire 1 " i1 $end
+$scope module asd $end
+$var wire 1 5 out $end
+$var wire 1 " i2 $end
+$var wire 1 6 i1 $end
+$upscope $end
+$scope module gate112 $end
+$var wire 1 6 out $end
+$var wire 1 ! in $end
+$upscope $end
+$scope module gate3 $end
+$var wire 1 5 in $end
+$var wire 1 & out $end
+$upscope $end
+$scope module gate4 $end
+$var wire 1 4 out $end
+$var wire 1 " i2 $end
+$var wire 1 ! i1 $end
+$upscope $end
+$scope module gate5 $end
+$var wire 1 4 in $end
+$var wire 1 % out $end
+$upscope $end
+$upscope $end
+$scope module mux4bit $end
+$var wire 1 ! select $end
+$var wire 4 7 o1 [3:0] $end
+$var wire 4 8 o0 [3:0] $end
+$var wire 4 9 i1 [3:0] $end
+$scope module demux112 $end
+$var wire 1 : i1 $end
+$var wire 1 ; y1 $end
+$var wire 1 < y0 $end
+$var wire 1 = select_ $end
+$var wire 1 ! select $end
+$var wire 1 > o1 $end
+$var wire 1 ? o0 $end
+$scope module asd $end
+$var wire 1 : i2 $end
+$var wire 1 < out $end
+$var wire 1 = i1 $end
+$upscope $end
+$scope module gate112 $end
+$var wire 1 = out $end
+$var wire 1 ! in $end
+$upscope $end
+$scope module gate3 $end
+$var wire 1 < in $end
+$var wire 1 ? out $end
+$upscope $end
+$scope module gate4 $end
+$var wire 1 : i2 $end
+$var wire 1 ; out $end
+$var wire 1 ! i1 $end
+$upscope $end
+$scope module gate5 $end
+$var wire 1 ; in $end
+$var wire 1 > out $end
+$upscope $end
+$upscope $end
+$scope module demux114 $end
+$var wire 1 @ i1 $end
+$var wire 1 A y1 $end
+$var wire 1 B y0 $end
+$var wire 1 C select_ $end
+$var wire 1 ! select $end
+$var wire 1 D o1 $end
+$var wire 1 E o0 $end
+$scope module asd $end
+$var wire 1 @ i2 $end
+$var wire 1 B out $end
+$var wire 1 C i1 $end
+$upscope $end
+$scope module gate112 $end
+$var wire 1 C out $end
+$var wire 1 ! in $end
+$upscope $end
+$scope module gate3 $end
+$var wire 1 B in $end
+$var wire 1 E out $end
+$upscope $end
+$scope module gate4 $end
+$var wire 1 @ i2 $end
+$var wire 1 A out $end
+$var wire 1 ! i1 $end
+$upscope $end
+$scope module gate5 $end
+$var wire 1 A in $end
+$var wire 1 D out $end
+$upscope $end
+$upscope $end
+$scope module demux12 $end
+$var wire 1 F i1 $end
+$var wire 1 G y1 $end
+$var wire 1 H y0 $end
+$var wire 1 I select_ $end
+$var wire 1 ! select $end
+$var wire 1 J o1 $end
+$var wire 1 K o0 $end
+$scope module asd $end
+$var wire 1 F i2 $end
+$var wire 1 H out $end
+$var wire 1 I i1 $end
+$upscope $end
+$scope module gate112 $end
+$var wire 1 I out $end
+$var wire 1 ! in $end
+$upscope $end
+$scope module gate3 $end
+$var wire 1 H in $end
+$var wire 1 K out $end
+$upscope $end
+$scope module gate4 $end
+$var wire 1 F i2 $end
+$var wire 1 G out $end
+$var wire 1 ! i1 $end
+$upscope $end
+$scope module gate5 $end
+$var wire 1 G in $end
+$var wire 1 J out $end
+$upscope $end
+$upscope $end
+$scope module demux13 $end
+$var wire 1 L i1 $end
+$var wire 1 M y1 $end
+$var wire 1 N y0 $end
+$var wire 1 O select_ $end
+$var wire 1 ! select $end
+$var wire 1 P o1 $end
+$var wire 1 Q o0 $end
+$scope module asd $end
+$var wire 1 L i2 $end
+$var wire 1 N out $end
+$var wire 1 O i1 $end
+$upscope $end
+$scope module gate112 $end
+$var wire 1 O out $end
+$var wire 1 ! in $end
+$upscope $end
+$scope module gate3 $end
+$var wire 1 N in $end
+$var wire 1 Q out $end
+$upscope $end
+$scope module gate4 $end
+$var wire 1 L i2 $end
+$var wire 1 M out $end
+$var wire 1 ! i1 $end
+$upscope $end
+$scope module gate5 $end
+$var wire 1 M in $end
+$var wire 1 P out $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope module probador_ $end
+$var wire 1 + Nand $end
+$var wire 1 * Nor $end
+$var wire 1 ) Not $end
+$var wire 1 & deMux_0 $end
+$var wire 1 % deMux_1 $end
+$var wire 4 R deMux_4_bits_0 [3:0] $end
+$var wire 4 S deMux_4_bits_1 [3:0] $end
+$var reg 4 T bus [3:0] $end
+$var reg 1 ' clk $end
+$var reg 1 " entrada1 $end
+$var reg 1 ! entrada2 $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 T
+bx S
+bx R
+xQ
+xP
+xO
+xN
+xM
+0L
+xK
+xJ
+xI
+xH
+xG
+0F
+xE
+xD
+xC
+xB
+xA
+0@
+x?
+x>
+x=
+x<
+x;
+0:
+b0 9
+bx 8
+bx 7
+x6
+x5
+x4
+r0 3
+r0 2
+r0 1
+r0 0
+x/
+b0 .
+bx -
+bx ,
+x+
+x*
+x)
+b0 (
+0'
+x&
+x%
+bx $
+bx #
+0"
+0!
+$end
+#90
+1*
+#350
+r35 1
+1O
+1I
+1C
+1=
+16
+1)
+#400
+1<
+1B
+1N
+1H
+1M
+1G
+1A
+1;
+14
+15
+1+
+#750
+0?
+0E
+0Q
+b0 $
+b0 -
+b0 8
+b0 R
+0K
+0P
+0J
+0D
+b0 #
+b0 ,
+b0 7
+b0 S
+0>
+0%
+0&
+#1250
+1/
+r125 0
+1'
+#2500
+r250 2
+0'
+#3750
+1!
+r375 0
+1'
+#3840
+0*
+#4100
+0O
+0I
+0C
+0=
+06
+#5000
+r500 2
+0'
+#6250
+1:
+1@
+1L
+1F
+0!
+1"
+b1111 (
+b1111 .
+b1111 9
+b1111 T
+r625 0
+1'
+#6600
+r660 1
+r125 3
+1O
+1I
+1C
+1=
+16
+0)
+#7000
+0N
+0H
+0B
+0<
+05
+#7350
+1Q
+1K
+1E
+b1111 $
+b1111 -
+b1111 8
+b1111 R
+1?
+1&
+#7500
+r750 2
+0'
+#8750
+0:
+0@
+1!
+b11 (
+b11 .
+b11 9
+b11 T
+0/
+r875 0
+1'
+#9100
+0O
+0I
+0C
+0=
+06
+#9150
+1<
+1B
+0M
+0G
+04
+0+
+#9500
+0?
+b11 $
+b11 -
+b11 8
+b11 R
+0E
+1P
+b11 #
+b11 ,
+b11 7
+b11 S
+1J
+1%
+1N
+1H
+15
+#9850
+0Q
+b0 $
+b0 -
+b0 8
+b0 R
+0K
+0&
+#10000
+r1000 2
+0'
+#11250
+r1125 0
+1'
+#12500
+r1250 2
+0'
+#13750
+1@
+b111 (
+b111 .
+b111 9
+b111 T
+r1375 0
+1'
+#14150
+0A
+#14500
+b111 #
+b111 ,
+b111 7
+b111 S
+1D
+#15000
+r1500 2
+0'
+#16250
+1:
+0@
+0F
+b1010 (
+b1010 .
+b1010 9
+b1010 T
+1'

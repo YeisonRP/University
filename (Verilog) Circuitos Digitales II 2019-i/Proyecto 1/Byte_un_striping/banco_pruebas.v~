@@ -1,0 +1,20 @@
+`timescale 	1ns				/ 100ps
+
+`include "Byte_un_striping_cond.v"
+`include "Byte_un_striping_estr.v"
+`include "probador.v"
+
+module banco_pruebas; 
+
+/*AUTOWIRE*/
+
+Byte_un_striping_cond  Byte_un_striping_cond_instance( /*AUTOINST*/ 
+  		 );
+
+ Byte_un_striping_estr  Byte_un_striping_estr_instance( /*AUTOINST*/ 
+		);
+
+probador  probador_inst( /*AUTOINST*/ 
+		 );
+
+endmodule

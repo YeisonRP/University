@@ -1,0 +1,26 @@
+En /tiempos
+
+
+python plotter.py n.txt media.txt
+python plotter.py n.txt median.txt
+python plotter.py n.txt stdev.txt
+
+
+
+python fitter.py media.txt lin
+python fitter.py media.txt poly2
+python fitter.py media.txt poly3
+python fitter.py media.txt poly4
+python fitter.py media.txt poly5
+python fitter.py media.txt log
+python fitter.py media.txt pow
+
+
+
+python fitter.py median.txt lin
+python fitter.py median.txt poly2
+python fitter.py median.txt poly3
+python fitter.py median.txt poly4
+python fitter.py median.txt poly5
+python fitter.py median.txt log
+python fitter.py median.txt pow

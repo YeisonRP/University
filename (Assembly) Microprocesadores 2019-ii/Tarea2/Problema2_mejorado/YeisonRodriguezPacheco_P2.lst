@@ -1,0 +1,95 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ;*******************************************************************************
+                        ;                               TAREA 2: EJERCICIO 2
+                        ;                          PROGRAMA XOR ENTRE DOS TABLAS
+                        ;*******************************************************************************
+                        ;
+                        ;       UNIVERSIDAD DE COSTA RICA
+                        ;       FECHA 19/09/19
+                        ;       AUTOR: YEISON RODRIGUEZ PACHECO B56074
+                        ;       COREREO: yeisonrodriguezpacheco@gmail.com
+                        ;
+                        ; Descripcion: Este es un programa que se encarga leer dos tablas, una de mascaras
+                        ; guardada en la direccion MASCARAS (se debe leer de manera ascendente) y otra
+                        ; de datos almacenada en la direccion DATOS (se lee de maneda descendente). El
+                        ; programa calcula la XOR entre la primer mascara y el ultimo dato, luego entre
+                        ; la segunda mascara y el penultimo dato, asi sucesivamente. La tabla de mascaras
+                        ; termina con el dato $FE y la de datos con el dato $FF. La cantidad de datos de
+                        ; las tablas debe ser menor a 1000. Ambas tablas pueden tener distintos tamanos
+                        ; Los datos y mascaras son de 1 byte.
+                        ; Los resultados de las XOR que den negativos se deben almacenar en la direccion
+                        ; NEGAT.
+                        ;
+                        
+                        ;*******************************************************************************
+                        ;                        DECLARACION ESTRUCTURAS DE DATOS
+                        ;*******************************************************************************
+                        
+1050                            ORG $1050
+1050 45 12 34 12 f3 12  DATOS: db $45,$12,$34,$12,$f3,$12,$00,$23,$ff
+     00 23 ff
+                        
+1150                            ORG $1150
+1150 12 47 9a 4d ef 23  MASCARAS: db $12,$47,$9a,$4d,$ef,$23,$f2,$e3,$f2,$f8,$fc,$fe
+     f2 e3 f2 f8 fc fe
+                        
+1300                            ORG $1300
+1300                    NEGAT:     ds 1000       ;Resultados negativos de las mascaras
+                        
+1500                            ORG $1500
+1500                    DIR_GUARDADO    ds 2    ; Variable tipo word que contiene la direccion de guar-
+                                                ; dado del siguiente numero en NEGAT
+1502                    CONTADOR_DATOS  ds 2    ; Variable tipo word que almacena la cantidad de datos
+                                                ; en DATOS.
+                        
+                        
+                        ;*******************************************************************************
+                        ;                              PROGRAMA PRINCIPAL
+                        ;*******************************************************************************
+2000                            ORG $2000
+2000 cd 10 50                   LDY #DATOS             ; Inicializando valores
+2003 cc 00 00                   LDD #0
+2006 79 15 02                   CLR CONTADOR_DATOS
+2009                    Contando:
+2009 a6 70                      LDAA 1,Y+              ; Encontrando la cantidad de datos en DATOS
+200b 81 ff                      CMPA #$FF
+200d 27 09                      BEQ Continuar
+200f cb 01                      ADDB #1
+2011 24 f6                      BCC Contando            ; Sigue contando si no se levanta el carry
+2013 72 15 02                   INC CONTADOR_DATOS      ; incrementa parte alta del contador porque hubo carry
+2016 20 f1                      BRA Contando
+2018                    Continuar:
+2018 cd 15 02                   LDY #CONTADOR_DATOS     ; Guardando parte baja del tamano de la tabla DATOS en memoria
+201b 6b 41                      STAB 1,Y
+201d ce 11 50                   LDX #MASCARAS           ; X siempre tendra el puntero a datos de mascaras
+2020 cd 13 00                   LDY #NEGAT              ; Copiando en DIR_GUARDADO de guardado el valor de NEGAT
+2023 7d 15 00                   STY DIR_GUARDADO
+2026                    Main_loop:
+2026 cd 10 50                   LDY #DATOS              ; Cargando valores a utilizar
+2029 fc 15 02                   LDD CONTADOR_DATOS
+202c 27 22                      BEQ FIN                 ; Ya se opero en toda la tabla de DATOS
+202e 03                         DEY                     ; Cargando en A el valor del dato de DATOS
+202f a6 ee                      LDAA D,Y
+2031 c6 fe                      LDAB #$FE               ; Verificacion si se llego al final de la tabla de mascaras
+2033 e1 00                      CMPB 0,X
+2035 27 19                      BEQ FIN                 ; Si se llego al final de la tabla de mascaras se acaba el programa
+2037 a8 30                      EORA 1,X+                ; Calculo de la XOR, se guarda en A, se aumenta x en 1
+2039 2b 02                      BMI Guardar             ; Si el resultado de la XOR es negativo, se procede a guardarlo
+203b 20 08                      BRA Dec_contador        ; Se repite el ciclo
+203d                    Guardar:
+203d fd 15 00                   LDY DIR_GUARDADO        ; Guardando el dato y haciendo DIR_GUARDADO += 1
+2040 6a 70                      STAA 1,Y+
+2042 7d 15 00                   STY DIR_GUARDADO
+2045                    Dec_contador:
+2045 fc 15 02                   LDD CONTADOR_DATOS      ; Decrementando el contador de datos
+2048 83 00 01                   SUBD #1
+204b 7c 15 02                   STD CONTADOR_DATOS
+204e 20 d6                      BRA Main_loop           ; Se repite el ciclo
+2050                    FIN:
+2050 20 fe                      BRA FIN
+
+Executed: Thu Sep 26 23:27:23 2019
+Total cycles: 88, Total bytes: 103
+Total errors: 0, Total warnings: 0

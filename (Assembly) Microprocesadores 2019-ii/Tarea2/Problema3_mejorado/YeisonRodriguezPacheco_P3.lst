@@ -1,0 +1,69 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ;*******************************************************************************
+                        ;                               TAREA 2: EJERCICIO 3
+                        ;                          PROGRAMA ORDENAR MENOR A MAYOR
+                        ;*******************************************************************************
+                        ;
+                        ;       UNIVERSIDAD DE COSTA RICA
+                        ;       FECHA 19/09/19
+                        ;       AUTOR: YEISON RODRIGUEZ PACHECO B56074
+                        ;       COREREO: yeisonrodriguezpacheco@gmail.com
+                        ;
+                        ; Descripcion: Este programa se encarga de guardar numeros con signo de 1 byte
+                        ; que sean divisibles por 4 en la direccion DIV4. Los datos se leen de la
+                        ; direccion DATOS y su longitud se encuentra en la variable L de 1 byte. Se debe
+                        ; almacenar en la variable CANT4 la cantidad de numeros divisibles por 4 encon-
+                        ; trados. Los punteros indices X y Y solo se pueden modificar al inicio del
+                        ; programa
+                        ;
+                        ;*******************************************************************************
+                        ;                        DECLARACION ESTRUCTURAS DE DATOS
+                        ;*******************************************************************************
+1000                            ORG $1000
+1000                    L:               ds 1     ; Variable tipo byte. Es el tamano del arreglo
+                        
+1001                    CANT4:           ds 1     ; Variable tipo bye. Se almacena en esta variable la
+                                                  ; cantidad de numero divisibles por 4 encontrados
+                                                  
+1002                    AUX:             ds 1     ; Variable tipo byte que almacena el dato que se puede
+                                                  ; o no guardar, dependiendo si es mult de 4.
+                        
+1100                            ORG $1100
+1100                    DATOS:              ds 254 ; Array que contiene los datos de 1 byte con signo a
+                                                   ; analizar
+                        
+1200                            ORG $1200
+1200                    DIV4:               ds 254 ; Array que contiene los numeros divisibles por 4,
+                                                   ; tambien de 1 byte
+                        
+                        ;*******************************************************************************
+                        ;                              PROGRAMA PRINCIPAL
+                        ;*******************************************************************************
+1300                            ORG $1300
+1300 ce 11 00                   LDX #DATOS      ;Inicializando punteros que no se van a cambiar NUNCA
+1303 cd 12 00                   LDY #DIV4
+1306 79 10 01                   CLR CANT4       ; Borrando lo que tenga CATN4
+1309 c7                         CLRB            ; B = 0
+130a f7 10 00                   TST L           ; Si la longitud es 0, termina el programa
+130d 27 1d                      BEQ FIN
+130f                    Main_Loop:
+130f a6 e5                      LDAA B,X        ; Cargando el numero del array a analizar
+1311 7a 10 02                   STAA AUX        ; Guarda el numero en una variable auxiliar
+1314 1f 10 02 03 02             BRCLR AUX,%00000011,Guardar_numero ;Viendo si los dos bits LSB son 0
+1319 20 0b                      BRA Aumentar_contador              ; Si no son 0, se continua.
+131b                    Guardar_numero:
+131b b6 10 01                   LDAA CANT4      ; Para hacer direccionamiento indexado con acumulador
+131e 72 10 01                   INC CANT4       ; Cantidad de numeros encontrados + 1
+1321 18 09 ec 10 02             MOVB AUX, A,Y   ; Guardando el numero en el arreglo DIV4
+1326                    Aumentar_contador:      ; Aumenta contador y verifica si ya se analizo todo.
+1326 52                         INCB
+1327 f1 10 00                   CMPB L
+132a 26 e3                      BNE Main_Loop
+132c                    FIN:
+132c 20 fe                      BRA FIN
+
+Executed: Thu Sep 26 18:09:58 2019
+Total cycles: 48, Total bytes: 46
+Total errors: 0, Total warnings: 0

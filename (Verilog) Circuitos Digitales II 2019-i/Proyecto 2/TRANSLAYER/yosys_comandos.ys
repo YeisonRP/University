@@ -1,0 +1,23 @@
+# read design
+read_verilog TRANSLAYER_c.v
+	   
+# elaborate design hierarchy 	   
+hierarchy -check -top TRANSLAYER_c
+ 	   
+# the high-level stuff  	   
+proc; opt; fsm; opt; memory; opt
+ 	   
+# mapping to internal cell library 	   
+techmap; opt
+	   
+# mapping flip-flops to cmos.lib	   
+dfflibmap -liberty cmos.lib
+	   
+# mapping logic to cmos.lib	   
+abc -liberty cmos.lib
+	   
+# cleanup	   
+clean
+	   
+# write synthesized design  	   
+write_verilog TRANSLAYER_e.v

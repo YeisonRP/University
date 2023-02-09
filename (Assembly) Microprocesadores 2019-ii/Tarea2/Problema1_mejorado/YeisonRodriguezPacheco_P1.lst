@@ -1,0 +1,89 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ;*******************************************************************************
+                        ;                               TAREA 2: EJERCICIO 1
+                        ;                          PROGRAMA ORDENAR MENOR A MAYOR
+                        ;*******************************************************************************
+                        ;
+                        ;       UNIVERSIDAD DE COSTA RICA
+                        ;       FECHA 18/09/19
+                        ;       AUTOR: YEISON RODRIGUEZ PACHECO B56074
+                        ;       COREREO: yeisonrodriguezpacheco@gmail.com
+                        ;
+                        ; Descripcion: Este es un programa que se encarga de ordenar un array de numeros
+                        ; de un byte ubicados en la direccion ORDENAR, dichos numeros son con signo y
+                        ; ademas la longitud del array es menor de 200. Los numeros se ordenan de menor
+                        ; a mayor sin tomar en cuenta los ceros. Los datos ordenados se almacenan en un
+                        ; array que comienza en la direccion ORDENADOS. La cantidad de datos a ordenar
+                        ; se almacena en la variable CANT. Las variables CLEAR y CONTADOR son de un byte
+                        ; y se utilizan para poner en 0 el numero ya analizado en una iteracion y para
+                        ; llevar la cuenta de cuando se debe detener el programa.
+                        ;
+                        ;
+                        
+                        ;*******************************************************************************
+                        ;                        DECLARACION ESTRUCTURAS DE DATOS
+                        ;*******************************************************************************
+1000                            ORG $1000
+1000                    CANT:      ds 1          ; Variable tipo byte
+                        
+1001                    CLEAR:     ds 1          ; Variable auxiliar tipo byte. Utilizada para guardar
+                                                 ; una posición a borrar del arreglo ORDENAR.
+                                                 
+1002                    CONTADOR:  ds 1          ; Variable tipo byte utilizada como contador.
+                        
+1100                            ORG $1100
+1100                    ORDENAR:   ds 200        ; Arreglo de numero de 1 byte a ordenar
+                        
+1200                            ORG $1200
+1200                    ORDENADOS: ds 200        ; Arreglo que almacena numeros de 1 byte ordenados
+                        
+                        
+                        ;*******************************************************************************
+                        ;                              PROGRAMA PRINCIPAL
+                        ;*******************************************************************************
+1500                            ORG $1500
+                                
+1500 ce 11 00                   LDX #ORDENAR
+1503 cd 12 00                   LDY #ORDENADOS
+1506 79 10 01                   CLR CLEAR           ; CLEAR = 0
+1509 b6 10 00                   LDAA CANT           ; CONTADOR '= CANT - 1
+150c 27 35                      BEQ FIN             ; Si cant es 0, termina
+150e 43                         DECA
+150f 7a 10 02                   STAA CONTADOR       ; Contador = CANT -1
+1512                    Main_loop:
+1512 c7                         CLRB                ; B = 0
+1513 b6 10 00                   LDAA CANT           ; A '= CANT - 1
+1516 43                         DECA
+1517                    check_next_number:
+1517 e7 e4                      TST A,X          ; Es el numero analizado 0?
+1519 27 14                      BEQ decrementar_contador_interno
+151b 04 41 0c                   TBEQ B, guardar_num  ; B = 0?
+151e e1 e4                      CMPB A,X    ; Numero actual mayor o igual a numero en memoria?
+1520 2e 08                      BGT guardar_num
+1522 e1 e4                      CMPB A,X         ; Numero actual igual a numero en memoria?
+1524 26 09                      BNE decrementar_contador_interno
+1526 69 e4                      CLR A,X          ; Poniendo numero en memoria igual al actual en 0 para eliminarlo
+1528 20 05                      BRA decrementar_contador_interno
+152a                    guardar_num:
+152a e6 e4                      LDAB A,X           ; Guardando numero que es menor al anterior
+152c 7a 10 01                   STAA CLEAR         ; Guardando posicion de borrado para borrarlo si fue el menor en esta iteracion
+152f                    decrementar_contador_interno:
+152f 04 40 03                   TBEQ A,decrementar_contador_general ; Si ya se leyeron todos los numeros en esta iteracion
+1532 43                         DECA
+1533 20 e2                      BRA check_next_number  ; Se lee el siguiente numero
+1535                    decrementar_contador_general:
+1535 b6 10 01                   LDAA CLEAR      ;Limpiando en ORDENAR el numero ya elegido en esta iteracion, para que no se vuelva a elegir
+1538 69 e4                      CLR A,X
+153a 6b 70                      STAB 1,Y+       ; Guardando el numero en ordenados
+153c 73 10 02                   DEC CONTADOR
+153f 27 02                      BEQ FIN
+1541 20 cf                      BRA Main_loop   ; Repetir el ciclo ya que el contador general no ha llegado a 0
+1543                    FIN:
+1543 20 fe                      BRA FIN
+                        
+
+Executed: Thu Sep 26 21:22:02 2019
+Total cycles: 82, Total bytes: 69
+Total errors: 0, Total warnings: 0

@@ -1,0 +1,47 @@
+`timescale 	1ns				/ 100ps
+
+`include "demux_conductual.v"
+`include "demux_estructural_sintetizado.v"
+`include "probador.v"
+
+module banco_pruebas; 
+
+ /*AUTOWIRE*/
+ // Beginning of automatic wires (for undeclared instantiated-module outputs)
+ wire			clk;			// From probador_inst of probador.v
+ wire [3:0]		data_in;		// From probador_inst of probador.v
+ wire [3:0]		data_out0, data_out0_cond, data_out0_estruc_sint;		// From demux_conductual_instance of demux_conductual.v, ...
+ wire [3:0]		data_out1, data_out1_cond, data_out1_estruc_sint;		// From demux_conductual_instance of demux_conductual.v, ...
+ wire			reset_L;		// From probador_inst of probador.v
+ // End of automatics
+
+demux_conductual  demux_conductual_instance( /*AUTOINST*/
+					    // Outputs
+					    .data_out0		(data_out0_cond[3:0]),
+					    .data_out1		(data_out1_cond[3:0]),
+					    // Inputs
+					    .clk		(clk),
+					    .reset_L		(reset_L),
+					    .data_in		(data_in[3:0]));
+
+ demux_estructural_sintetizado  demux_estructural_sintetizado_instance( /*AUTOINST*/
+								       // Outputs
+								       .data_out0	(data_out0_estruc_sint[3:0]),
+								       .data_out1	(data_out1_estruc_sint[3:0]),
+								       // Inputs
+								       .clk		(clk),
+								       .data_in		(data_in[3:0]),
+								       .reset_L		(reset_L));
+
+probador  probador_inst( /*AUTOINST*/
+			// Outputs
+			.data_in	(data_in[3:0]),
+			.reset_L	(reset_L),
+			.clk		(clk),
+			// Inputs
+			.data_out0_ESTRUC(data_out0_estruc_sint[3:0]),
+			.data_out1_ESTRUC(data_out1_estruc_sint[3:0]),
+			.data_out0_COND	(data_out0_cond[3:0]),
+			.data_out1_COND	(data_out1_cond[3:0]));
+
+ endmodule
