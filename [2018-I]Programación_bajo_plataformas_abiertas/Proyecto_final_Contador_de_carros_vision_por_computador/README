@@ -1,0 +1,11 @@
+Este programa consiste en un contador de carros en tiempo real.
+
+El video utilizado es gratuito y puede ser descargado en este link: 
+	https://www.youtube.com/watch?v=dTdsjKRyMuU
+
+Las dimensiones del video son 1280 x 720, si se utiliza otro tamaño el programa fallará.
+
+Este programa contiene variables globales que sirven para controlar el funcionamiento del mismo, a continuación se explicarán las más importantes.
+		FRAMES_INICIO_CONTEO = Esta variable indica el numero de frame en el que se inicia el conteo. NO PONER EN CERO
+		imprimir_centroides_en_consola = Si se coloca en 1 se imprimen los centroides y otra información en consola, si se coloca en cero no imprime nada. Cuando tiene valor de uno el video se 							 ejecute más lentamente
+		pasar_frame_por_frame = 1 ##Si es 0 el video sera pasado por el usuatio de manera manual cualquier tecla, dejar en 1 si se quiere reproducir normalmente el video
